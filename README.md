@@ -24,10 +24,10 @@ An interactive web application for analyzing survey or tabular datasets using **
 - **Reporting**: HTML, PDF (via pdfkit/WeasyPrint/FPDF fallback).  
 
 ## 📂 Project Structure  
-├── index.html # Frontend web UI
-├── script.js # Frontend logic (upload, steps, mode selection)
-├── style.css # Styling
-├── server.py # FastAPI backend server
-├── survey_ai.py # Core AI pipeline for data cleaning, analysis & reporting
-├── uploads/ # Temporary uploaded files
-├── outputs/ # Generated cleaned data & reports
+- index.html # Frontend web UI
+- script.js # Frontend logic (upload, steps, mode selection)
+- style.css # Styling
+- server.py # FastAPI backend server
+- survey_ai.py # Core AI pipeline for data cleaning, analysis & reporting
+- uploads/ # Temporary uploaded files
+- outputs/ # Generated cleaned data & reports
