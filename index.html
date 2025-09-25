@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Data Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-heading">AI-Powered Data Analysis System</h1>
+        <p class="sub-heading">
+            Upload your data and choose between AI automation or manual control
+        </p>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Steps -->
+        <div class="steps">
+            <div class="step active" data-step="0">
+                <span class="material-icons">cloud_upload</span>
+                <p>Upload</p>
+            </div>
+            <div class="step" data-step="1">
+                <span class="material-icons">tune</span>
+                <p>Mode</p>
+            </div>
+            <div class="step" data-step="2">
+                <span class="material-icons">autorenew</span>
+                <p>Processing</p>
+            </div>
+            <div class="step" data-step="3">
+                <span class="material-icons">check_circle</span>
+                <p>Done</p>
+            </div>
+        </div>
+
+        <!-- Upload Box -->
+        <div class="upload-box step-content" id="upload-step">
+            <span class="material-icons upload-icon">cloud_upload</span>
+            <h3>Drag & Drop your file here</h3>
+            <p>Supports CSV and Excel files (max 50MB)</p>
+            <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" hidden>
+            <button id="chooseFileBtn" class="primary-btn">Choose File</button>
+            <div id="fileInfo" class="file-info hidden">
+                <span class="material-icons">description</span>
+                <span id="fileName"></span>
+                <span id="fileSize"></span>
+                <button id="removeFile" class="remove-btn">&times;</button>
+            </div>
+        </div>
+
+        <!-- Mode Step -->
+        <div class="mode-box step-content hidden" id="modeSelection">
+            <h2>Choose Processing Mode:</h2>
+
+            <div class="mode-option mode-btn" id="aiButton" data-mode="ai">
+                <div class="mode-icon">🤖</div>
+                <div class="mode-text">
+                    <div class="mode-title">AI Powered</div>
+                    <div class="mode-desc">Fastest way · AI chooses best methods · Review results after</div>
+                </div>
+                <div class="mode-features">
+                    <span class="feature-tag">Auto Cleaning</span>
+                    <span class="feature-tag">Smart Analysis</span>
+                    <span class="feature-tag">Full Report</span>
+                </div>
+            </div>
+
+            <div class="mode-option mode-btn" id="manualButton" data-mode="manual">
+                <div class="mode-icon">⚙️</div>
+                <div class="mode-text">
+                    <div class="mode-title">Manually Selected</div>
+                    <div class="mode-desc">Full control · Configure each process · Suitable for experts</div>
+                </div>
+                <div class="mode-features">
+                    <span class="feature-tag">Custom Cleaning</span>
+                    <span class="feature-tag">Selective Analysis</span>
+                    <span class="feature-tag">Targeted Reports</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Selection Modal -->
+        <div id="manualModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Configure Analysis Settings</h2>
+                    <span class="close-btn" id="closeModal">&times;</span>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="cleaningSelect">
+                            <span class="material-icons">cleaning_services</span>
+                            Cleaning Strategy:
+                        </label>
+                        <select id="cleaningSelect" class="form-select">
+                            <option value="">Select cleaning method...</option>
+                            <option value="missing">Handle Missing Values</option>
+                            <option value="outliers">Handle Outliers</option>
+                            <option value="dropna">Drop Rows with Null Values</option>
+                        </select>
+                        <small class="help-text">Choose how to clean your data before analysis</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="analysisSelect">
+                            <span class="material-icons">analytics</span>
+                            Analysis Type:
+                        </label>
+                        <select id="analysisSelect" class="form-select">
+                            <option value="">Select analysis type...</option>
+                            <option value="descriptives">Descriptive Statistics</option>
+                            <option value="correlation">Correlation Matrix</option>
+                            <option value="topcats">Top Categories Report</option>
+                            <option value="hist_box">Histograms & Boxplots</option>
+                            <option value="scatter">Scatterplots</option>
+                            <option value="full_report">Full Report</option>
+                        </select>
+                        <small class="help-text">Select the type of analysis to perform</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="manualCancelBtn" class="secondary-btn">Cancel</button>
+                    <button id="manualOkBtn" class="primary-btn">Start Analysis</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing Step -->
+        <div class="processing-box step-content hidden" id="process-step">
+            <div class="processing-animation">
+                <span class="material-icons spin">autorenew</span>
+            </div>
+            <h3>Processing your file...</h3>
+            <p id="fileNameDisplay"></p>
+            <div class="processing-status">
+                <div class="status-item">
+                    <span class="material-icons">upload_file</span>
+                    <span>File uploaded</span>
+                    <span class="status-check">✓</span>
+                </div>
+                <div class="status-item processing">
+                    <span class="material-icons">analytics</span>
+                    <span>Analyzing data...</span>
+                    <span class="status-spinner">⟳</span>
+                </div>
+                <div class="status-item pending">
+                    <span class="material-icons">description</span>
+                    <span>Generating report</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Done Step -->
+        <div class="step-content hidden" id="done-step">
+            <div class="success-icon">
+                <span class="material-icons">check_circle</span>
+            </div>
+            <h2>Analysis Complete!</h2>
+            <div id="results"></div>
+            <div class="action-buttons">
+                <button id="newAnalysis" class="secondary-btn">New Analysis</button>
+                <button id="shareResults" class="primary-btn">Share Results</button>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message hidden">
+            <span class="material-icons">error</span>
+            <span id="errorText"></span>
+            <button id="dismissError">&times;</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Processing your data...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
